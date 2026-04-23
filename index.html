@@ -4,931 +4,479 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>Noir Bloom — Luxury Fragrances Nigeria</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --black: #0a0805;
-      --deep: #110e09;
-      --gold: #c9a84c;
-      --gold-light: #e8cc7a;
-      --gold-dim: #7a6330;
-      --cream: #f5ede0;
-      --text: #d4c5a9;
-      --text-dim: #7a6e5f;
-      --border: rgba(201,168,76,0.2);
-    }
-
-    html { scroll-behavior: smooth; font-size: 16px; }
-
-    body {
-      background: var(--black);
-      color: var(--text);
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      width: 100%;
-      max-width: 100vw;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed; top: 0; width: 100%; z-index: 100;
-      padding: 1.2rem 4%;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: rgba(10,8,5,0.92);
-      backdrop-filter: blur(12px);
-    }
-    .nav-logo {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      letter-spacing: 0.3em;
-      color: var(--gold);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--cream); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-cta {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid var(--gold-dim);
-      padding: 0.5rem 1.2rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-    .nav-cta:hover { background: var(--gold); color: var(--black); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .hamburger span { width: 22px; height: 1px; background: var(--gold); display: block; transition: all 0.3s; }
-
-    /* Mobile Menu */
-    .mobile-menu {
-      display: none;
-      position: fixed; top: 60px; left: 0; right: 0;
-      background: rgba(10,8,5,0.98);
-      border-bottom: 1px solid var(--border);
-      z-index: 99;
-      padding: 1.5rem 4%;
-      flex-direction: column; gap: 1.2rem;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-menu a:hover { color: var(--gold); }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      width: 100%;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      overflow: hidden;
-      padding: 7rem 4% 4rem;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%),
-        linear-gradient(180deg, #0a0805 0%, #12100a 50%, #0a0805 100%);
-    }
-    .hero-lines {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-      background-size: 70px 70px;
-    }
-    .hero-content {
-      position: relative; z-index: 2;
-      text-align: center;
-      width: 100%;
-      max-width: 750px;
-      margin: 0 auto;
-      animation: fadeUp 1.2s ease forwards;
-    }
-    .hero-eyebrow {
-      font-size: clamp(0.55rem, 1.5vw, 0.65rem);
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.3s forwards;
-    }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 12vw, 8rem);
-      font-weight: 300;
-      line-height: 0.88;
-      color: var(--cream);
-      margin-bottom: 0.2em;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.5s forwards;
-    }
-    .hero-title em { font-style: italic; color: var(--gold); }
-    .hero-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 3vw, 1.8rem);
-      font-style: italic;
-      color: var(--text-dim);
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.7s forwards;
-    }
-    .hero-desc {
-      font-size: clamp(0.8rem, 2vw, 0.9rem);
-      line-height: 1.9;
-      color: var(--text-dim);
-      max-width: 460px;
-      margin: 0 auto 2.5rem;
-      opacity: 0;
-      animation: fadeUp 1s ease 0.9s forwards;
-    }
-    .hero-cta {
-      display: flex; gap: 1.2rem; align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 1s ease 1.1s forwards;
-    }
-    .btn-primary {
-      background: var(--gold);
-      color: var(--black);
-      padding: 0.9rem 2rem;
-      font-family: 'Cinzel', serif;
-      font-size: clamp(0.6rem, 1.5vw, 0.7rem);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.3s;
-      border: none; cursor: pointer;
-      display: inline-block;
-    }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-    .btn-ghost {
-      color: var(--text-dim);
-      font-size: clamp(0.6rem, 1.5vw, 0.7rem);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-bottom: 1px solid var(--gold-dim);
-      padding-bottom: 2px;
-      transition: color 0.3s;
-    }
-    .btn-ghost:hover { color: var(--gold); }
-    .hero-scroll {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-      opacity: 0; animation: fadeUp 1s ease 1.5s forwards;
-    }
-    .scroll-line {
-      width: 1px; height: 50px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease infinite;
-    }
-    .scroll-text { font-size: 0.55rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); }
-
-    /* MARQUEE */
-    .marquee-wrap {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-      padding: 0.9rem 0;
-      background: var(--deep);
-      width: 100%;
-    }
-    .marquee-track {
-      display: flex;
-      animation: marquee 22s linear infinite;
-      white-space: nowrap;
-    }
-    .marquee-item {
-      font-family: 'Cinzel', serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      padding: 0 2.5rem;
-      flex-shrink: 0;
-    }
-    .marquee-dot { color: var(--gold); margin: 0 0.8rem; }
-
-    /* SECTIONS */
-    .section-wrap { width: 100%; padding: 5rem 4%; }
-    .section-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.8rem;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 300;
-      color: var(--cream);
-      line-height: 1.1;
-      margin-bottom: 1.2rem;
-    }
-    .section-title em { font-style: italic; color: var(--gold); }
-
-    /* COLLECTION */
-    .featured { background: var(--deep); }
-    .featured-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
-    }
-    .featured-header p {
-      font-size: 0.82rem; line-height: 1.8;
-      color: var(--text-dim); max-width: 360px;
-    }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
-      gap: 2px;
-      width: 100%;
-    }
-    .product-card {
-      background: var(--black);
-      position: relative; overflow: hidden;
-      transition: transform 0.4s ease;
-    }
-    .product-card:hover { transform: translateY(-4px); }
-    .product-card:hover .product-overlay { opacity: 1; }
-    .product-card:hover .prod-img { transform: scale(1.06); }
-    .product-img-wrap {
-      height: clamp(220px, 30vw, 320px);
-      overflow: hidden; position: relative;
-      background: linear-gradient(135deg, #1a1510 0%, #0d0b07 100%);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .prod-img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-      opacity: 0.85;
-    }
-    .product-placeholder {
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 0.8rem;
-    }
-    .product-placeholder-icon { font-size: clamp(2.5rem, 6vw, 4rem); opacity: 0.3; }
-    .product-placeholder-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.75rem; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--gold-dim);
-    }
-    .product-badge {
-      position: absolute; top: 1rem; left: 1rem;
-      background: var(--gold); color: var(--black);
-      font-size: 0.55rem; letter-spacing: 0.3em;
-      text-transform: uppercase; padding: 0.3rem 0.7rem;
-      font-family: 'Cinzel', serif;
-    }
-    .product-overlay {
-      position: absolute; inset: 0;
-      background: rgba(10,8,5,0.7);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.4s ease;
-    }
-    .product-body { padding: 1.2rem; border-top: 1px solid var(--border); }
-    .product-category {
-      font-size: 0.58rem; letter-spacing: 0.35em;
-      text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.4rem;
-    }
-    .product-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      font-weight: 400; color: var(--cream); margin-bottom: 0.3rem;
-    }
-    .product-notes { font-size: 0.72rem; color: var(--text-dim); margin-bottom: 0.9rem; font-style: italic; }
-    .product-footer { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-    .product-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--gold);
-    }
-    .product-price span { font-size: 0.68rem; color: var(--text-dim); font-family: 'Raleway', sans-serif; margin-left: 0.2rem; }
-    .btn-order {
-      background: transparent; border: 1px solid var(--gold-dim);
-      color: var(--gold); padding: 0.5rem 1rem;
-      font-size: 0.58rem; letter-spacing: 0.22em;
-      text-transform: uppercase; cursor: pointer;
-      transition: all 0.3s; font-family: 'Cinzel', serif;
-      text-decoration: none; display: inline-block;
-    }
-    .btn-order:hover { background: var(--gold); color: var(--black); }
-
-    /* HOW IT WORKS */
-    .how { background: var(--black); }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-      gap: 2.5rem; margin-top: 3.5rem;
-    }
-    .step-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 7vw, 5rem);
-      font-weight: 300; color: rgba(201,168,76,0.1);
-      line-height: 1; margin-bottom: -0.8rem;
-    }
-    .step-line { width: 28px; height: 1px; background: var(--gold); margin-bottom: 0.8rem; }
-    .step-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      color: var(--cream); margin-bottom: 0.7rem;
-    }
-    .step-desc { font-size: 0.78rem; line-height: 1.9; color: var(--text-dim); }
-
-    /* ABOUT */
-    .about { background: var(--deep); }
-    .about-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem; align-items: center;
-    }
-    .about-visual { position: relative; height: clamp(280px, 40vw, 460px); }
-    .about-box-1 {
-      position: absolute; inset: 0;
-      border: 1px solid var(--border);
-      background: linear-gradient(135deg, #1a1510, #0d0b07);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .about-box-inner {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(4rem, 10vw, 8rem);
-      font-weight: 300; color: rgba(201,168,76,0.08);
-    }
-    .about-box-2 {
-      position: absolute; bottom: -1.5rem; right: -1.5rem;
-      width: clamp(120px, 16vw, 155px); height: clamp(120px, 16vw, 155px);
-      background: var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 0.2rem;
-    }
-    .about-stat-num {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      color: var(--black); line-height: 1;
-    }
-    .about-stat-label { font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(10,8,5,0.7); }
-    .about-content p { font-size: 0.85rem; line-height: 2; color: var(--text-dim); margin-bottom: 1.2rem; }
-    .about-features { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
-    .about-feature { display: flex; align-items: center; gap: 0.8rem; font-size: 0.78rem; color: var(--text-dim); }
-    .feature-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
-
-    /* ORDER */
-    .order-section { background: var(--black); text-align: center; }
-    .order-section .section-title { margin-bottom: 0.8rem; }
-    .order-section > .order-desc {
-      font-size: 0.82rem; color: var(--text-dim);
-      margin-bottom: 2.5rem; line-height: 1.8;
-    }
-    .order-form {
-      max-width: 540px; margin: 0 auto;
-      display: flex; flex-direction: column; gap: 1rem; text-align: left;
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-label { font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-dim); }
-    .form-input, .form-select, .form-textarea {
-      background: var(--deep); border: 1px solid var(--border);
-      color: var(--text); padding: 0.85rem 1rem;
-      font-family: 'Raleway', sans-serif; font-size: 0.82rem;
-      outline: none; transition: border-color 0.3s; width: 100%;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
-    .form-select { cursor: pointer; }
-    .form-select option { background: var(--deep); }
-    .form-textarea { resize: vertical; min-height: 90px; }
-
-    .payment-info {
-      background: var(--deep);
-      border: 1px solid var(--border);
-      padding: 1.2rem;
-      text-align: left;
-    }
-    .payment-info-title {
-      font-family: 'Cinzel', serif;
-      font-size: 0.65rem; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--gold);
-      margin-bottom: 0.8rem;
-    }
-    .payment-detail {
-      font-size: 0.78rem; color: var(--text-dim);
-      margin-bottom: 0.4rem; line-height: 1.6;
-    }
-    .payment-detail strong { color: var(--cream); }
-    .paypal-section { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
-    .paypal-divider {
-      display: flex; align-items: center; gap: 1rem;
-      color: var(--text-dim); font-size: 0.65rem;
-    }
-    .paypal-divider::before, .paypal-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .btn-whatsapp {
-      background: #25D366; color: white;
-      padding: 1rem 2rem; border: none;
-      font-size: 0.85rem; font-weight: 500; cursor: pointer;
-      transition: all 0.3s;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      text-decoration: none; width: 100%;
-    }
-    .btn-whatsapp:hover { background: #1da851; transform: translateY(-1px); }
-    .order-note { font-size: 0.7rem; color: var(--text-dim); text-align: center; margin-top: 0.5rem; font-style: italic; }
-
-    /* TESTIMONIALS */
-    .testimonials { background: var(--deep); text-align: center; }
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-      gap: 2px; margin-top: 3.5rem;
-    }
-    .testimonial {
-      background: var(--black); padding: 2rem; text-align: left;
-      border-top: 2px solid transparent; transition: border-color 0.3s;
-    }
-    .testimonial:hover { border-top-color: var(--gold); }
-    .testimonial-stars { color: var(--gold); margin-bottom: 0.8rem; font-size: 0.8rem; }
-    .testimonial-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem; font-style: italic;
-      color: var(--text); line-height: 1.8; margin-bottom: 1.2rem;
-    }
-    .testimonial-author { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
-
-    /* SOCIAL STRIP */
-    .social-strip {
-      background: var(--black);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 2.5rem 4%;
-      text-align: center;
-    }
-    .social-strip p { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 1.5rem; }
-    .social-icons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .social-pill {
-      display: flex; align-items: center; gap: 0.6rem;
-      border: 1px solid var(--border);
-      padding: 0.6rem 1.2rem;
-      text-decoration: none;
-      color: var(--text-dim);
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      transition: all 0.3s;
-    }
-    .social-pill:hover { border-color: var(--gold); color: var(--gold); }
-    .social-pill svg { width: 14px; height: 14px; fill: currentColor; }
-
-    /* FOOTER */
-    footer {
-      background: var(--black);
-      border-top: 1px solid var(--border);
-      padding: 4rem 4% 2rem;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 3rem; margin-bottom: 2.5rem;
-      padding-bottom: 2.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .footer-brand-logo {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      letter-spacing: 0.3em; color: var(--gold);
-      margin-bottom: 1rem; display: block;
-    }
-    .footer-brand-logo span { color: var(--cream); }
-    .footer-brand p { font-size: 0.78rem; line-height: 1.9; color: var(--text-dim); max-width: 280px; }
-    .footer-col-title {
-      font-family: 'Cinzel', serif; font-size: 0.62rem;
-      letter-spacing: 0.35em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.2rem;
-    }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-    .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.78rem; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--gold); }
-    .footer-bottom {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem;
-    }
-    .footer-copy { font-size: 0.68rem; color: var(--text-dim); letter-spacing: 0.1em; }
-    .footer-copy span { color: var(--gold); }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes scrollPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* POPUP */
-    .popup-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 500; display: flex;
-      align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s;
-      padding: 1rem;
-    }
-    .popup-overlay.active { opacity: 1; pointer-events: all; }
-    .popup {
-      background: var(--deep); border: 1px solid var(--border);
-      padding: 2.5rem; width: 100%; max-width: 380px;
-      text-align: center; position: relative;
-      transform: translateY(20px); transition: transform 0.3s;
-    }
-    .popup-overlay.active .popup { transform: translateY(0); }
-    .popup-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--cream); margin-bottom: 0.5rem; }
-    .popup-sub { color: var(--text-dim); font-size: 0.78rem; margin-bottom: 1.2rem; line-height: 1.7; }
-    .popup-input {
-      width: 100%; background: var(--black); border: 1px solid var(--border);
-      color: var(--text); padding: 0.85rem; font-family: 'Raleway', sans-serif;
-      font-size: 0.82rem; outline: none; margin-bottom: 0.8rem;
-    }
-    .popup-input:focus { border-color: var(--gold); }
-    .popup-close {
-      position: absolute; top: 0.8rem; right: 1rem;
-      font-size: 1.4rem; cursor: pointer; background: none;
-      border: none; color: var(--text-dim); line-height: 1;
-    }
-    .popup-close:hover { color: var(--gold); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .about-visual { height: 260px; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .footer-brand { grid-column: 1 / -1; }
-    }
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .nav-cta { display: none; }
-      .form-row { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; }
-      .hero-scroll { display: none; }
-    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--black:#0a0805;--deep:#110e09;--gold:#c9a84c;--gold-light:#e8cc7a;--gold-dim:#7a6330;--cream:#f5ede0;--text:#d4c5a9;--text-dim:#7a6e5f;--border:rgba(201,168,76,0.2)}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--text);font-family:'Raleway',sans-serif;font-weight:300;overflow-x:hidden;width:100%}
+    nav{position:fixed;top:0;width:100%;z-index:200;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(10,8,5,0.93);backdrop-filter:blur(14px)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:clamp(.95rem,2.2vw,1.25rem);letter-spacing:.28em;color:var(--gold);text-decoration:none}
+    .nav-logo span{color:var(--cream)}
+    .nav-links{display:flex;gap:1.8rem;list-style:none}
+    .nav-links a{color:var(--text-dim);text-decoration:none;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s}
+    .nav-links a:hover{color:var(--gold)}
+    .nav-cta{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:.45rem 1.1rem;text-decoration:none;transition:all .3s;white-space:nowrap}
+    .nav-cta:hover{background:var(--gold);color:var(--black)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .hamburger span{display:block;width:22px;height:1px;background:var(--gold)}
+    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(10,8,5,.98);border-bottom:1px solid var(--border);padding:1.5rem 5%;z-index:190;flex-direction:column;gap:1.2rem}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--text-dim);text-decoration:none;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;padding:.5rem 0;border-bottom:1px solid var(--border);transition:color .3s}
+    .mobile-menu a:hover{color:var(--gold)}
+    .hero{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:8rem 5% 5rem}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(201,168,76,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(201,168,76,.04) 0%,transparent 60%),linear-gradient(180deg,#0a0805 0%,#12100a 50%,#0a0805 100%)}
+    .hero-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.03) 1px,transparent 1px);background-size:60px 60px}
+    .hero-content{position:relative;z-index:2;text-align:center;width:100%;max-width:720px;margin:0 auto}
+    .hero-eyebrow{font-size:clamp(.52rem,1.4vw,.62rem);letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s ease .3s forwards}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.8rem,11vw,8rem);font-weight:300;line-height:.88;color:var(--cream);margin-bottom:.25em;opacity:0;animation:fadeUp 1s ease .5s forwards}
+    .hero-title em{font-style:italic;color:var(--gold)}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.8vw,1.7rem);font-style:italic;color:var(--text-dim);margin-bottom:2rem;opacity:0;animation:fadeUp 1s ease .7s forwards}
+    .hero-desc{font-size:clamp(.78rem,1.4vw,.88rem);line-height:1.9;color:var(--text-dim);max-width:460px;margin:0 auto 2.5rem;opacity:0;animation:fadeUp 1s ease .9s forwards}
+    .hero-cta{display:flex;gap:1.5rem;align-items:center;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 1s ease 1.1s forwards}
+    .btn-primary{background:var(--gold);color:var(--black);padding:.85rem 2rem;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;transition:all .3s;display:inline-block}
+    .btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+    .btn-ghost{color:var(--text-dim);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--gold-dim);padding-bottom:2px;transition:color .3s}
+    .btn-ghost:hover{color:var(--gold)}
+    .marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.85rem 0;background:var(--deep);width:100%}
+    .marquee-track{display:flex;animation:marquee 22s linear infinite;white-space:nowrap}
+    .marquee-item{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold-dim);padding:0 2.2rem;flex-shrink:0}
+    .marquee-dot{color:var(--gold);margin:0 .6rem}
+    section{padding:5rem 5%;width:100%}
+    .section-label{font-size:.56rem;letter-spacing:.44em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3.5rem);font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:1.2rem}
+    .section-title em{font-style:italic;color:var(--gold)}
+    .featured{background:var(--deep)}
+    .featured-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem}
+    .featured-header p{font-size:.8rem;line-height:1.8;color:var(--text-dim);max-width:340px}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:2px;width:100%}
+    .product-card{background:var(--black);position:relative;overflow:hidden;transition:transform .4s ease}
+    .product-card:hover{transform:translateY(-4px)}
+    .product-card:hover .product-overlay{opacity:1}
+    .product-img-wrap{height:clamp(200px,28vw,310px);position:relative;background:linear-gradient(135deg,#1a1510,#0d0b07);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .placeholder-icon{font-size:clamp(3rem,5vw,5rem);opacity:.4;transition:transform .4s}
+    .product-card:hover .placeholder-icon{transform:scale(1.08)}
+    .product-badge{position:absolute;top:.8rem;left:.8rem;background:var(--gold);color:var(--black);font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;padding:.22rem .65rem;font-family:'Cinzel',serif}
+    .product-overlay{position:absolute;inset:0;background:rgba(10,8,5,.72);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s}
+    .product-body{padding:1.1rem 1.3rem;border-top:1px solid var(--border)}
+    .product-category{font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.35rem}
+    .product-name{font-family:'Cormorant Garamond',serif;font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--cream);margin-bottom:.28rem}
+    .product-notes{font-size:.7rem;color:var(--text-dim);margin-bottom:.9rem;font-style:italic}
+    .product-footer{display:flex;justify-content:space-between;align-items:center}
+    .product-price{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.2vw,1.25rem);color:var(--gold)}
+    .product-price span{font-size:.62rem;color:var(--text-dim);font-family:'Raleway',sans-serif}
+    .btn-order{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);padding:.45rem .9rem;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:'Cinzel',serif;text-decoration:none;display:inline-block}
+    .btn-order:hover{background:var(--gold);color:var(--black)}
+    .how{background:var(--black)}
+    .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:2.5rem;margin-top:3rem}
+    .step-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5.5vw,4.5rem);font-weight:300;color:rgba(201,168,76,.1);line-height:1;margin-bottom:-.7rem}
+    .step-line{width:26px;height:1px;background:var(--gold);margin-bottom:.7rem}
+    .step-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--cream);margin-bottom:.6rem}
+    .step-desc{font-size:.76rem;line-height:1.9;color:var(--text-dim)}
+    .about{background:var(--deep);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;padding:5rem 5%}
+    .about-visual{position:relative;height:clamp(260px,35vw,440px)}
+    .about-box-1{position:absolute;inset:0;border:1px solid var(--border);background:linear-gradient(135deg,#1a1510,#0d0b07);display:flex;align-items:center;justify-content:center}
+    .about-box-inner{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,9vw,7.5rem);font-weight:300;color:rgba(201,168,76,.08)}
+    .about-box-2{position:absolute;bottom:-1.4rem;right:-1.4rem;width:clamp(90px,13vw,145px);height:clamp(90px,13vw,145px);background:var(--gold);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.2rem}
+    .about-stat-num{font-family:'Cinzel',serif;font-size:clamp(1.1rem,2.5vw,1.8rem);color:var(--black);line-height:1}
+    .about-stat-label{font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,8,5,.7)}
+    .about-content p{font-size:.82rem;line-height:2;color:var(--text-dim);margin-bottom:1.1rem}
+    .about-features{margin-top:1.4rem;display:flex;flex-direction:column;gap:.7rem}
+    .about-feature{display:flex;align-items:center;gap:.7rem;font-size:.76rem;color:var(--text-dim)}
+    .feature-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
+    .order-section{background:var(--black);text-align:center}
+    .order-section>p{font-size:.8rem;color:var(--text-dim);margin-bottom:2.5rem;line-height:1.8}
+    .order-form{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;text-align:left}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .form-group{display:flex;flex-direction:column;gap:.32rem}
+    .form-label{font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-dim)}
+    .form-input,.form-select,.form-textarea{background:var(--deep);border:1px solid var(--border);color:var(--text);padding:.82rem .95rem;font-family:'Raleway',sans-serif;font-size:.83rem;outline:none;transition:border-color .3s;width:100%;-webkit-appearance:none;appearance:none}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+    .form-select option{background:var(--deep)}
+    .form-textarea{resize:vertical;min-height:85px}
+    .payment-section{margin-top:.5rem;display:flex;flex-direction:column;gap:.8rem}
+    .payment-divider{display:flex;align-items:center;gap:.8rem;color:var(--text-dim);font-size:.65rem;letter-spacing:.1em}
+    .payment-divider::before,.payment-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .btn-whatsapp{background:#25D366;color:white;padding:.95rem 1.5rem;font-size:.85rem;font-weight:500;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.6rem;text-decoration:none;width:100%;border:none;cursor:pointer;font-family:'Raleway',sans-serif}
+    .btn-whatsapp:hover{background:#1da851;transform:translateY(-1px)}
+    .opay-box{background:var(--deep);border:1px solid var(--border);padding:1.2rem;text-align:center}
+    .opay-label{font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.4rem}
+    .opay-number{font-family:'Cinzel',serif;font-size:1.25rem;color:var(--gold);letter-spacing:.14em}
+    .opay-name{font-size:.7rem;color:var(--text-dim);margin-top:.3rem}
+    .order-note{font-size:.66rem;color:var(--text-dim);text-align:center;font-style:italic}
+    .testimonials{background:var(--deep);text-align:center}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:2px;margin-top:3.5rem}
+    .testimonial{background:var(--black);padding:1.8rem;text-align:left;border-top:2px solid transparent;transition:border-color .3s}
+    .testimonial:hover{border-top-color:var(--gold)}
+    .testimonial-stars{color:var(--gold);margin-bottom:.7rem;font-size:.78rem}
+    .testimonial-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(.88rem,1.8vw,1rem);font-style:italic;color:var(--text);line-height:1.8;margin-bottom:1.1rem}
+    .testimonial-author{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+    footer{background:var(--black);border-top:1px solid var(--border);padding:4rem 5% 2rem;width:100%}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+    .footer-brand-logo{font-family:'Cinzel',serif;font-size:clamp(.95rem,2vw,1.3rem);letter-spacing:.28em;color:var(--gold);margin-bottom:.8rem;display:block}
+    .footer-brand-logo span{color:var(--cream)}
+    .footer-brand p{font-size:.76rem;line-height:1.9;color:var(--text-dim)}
+    .footer-col-title{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+    .footer-links a{color:var(--text-dim);text-decoration:none;font-size:.76rem;transition:color .3s}
+    .footer-links a:hover{color:var(--gold)}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .footer-copy{font-size:.65rem;color:var(--text-dim)}
+    .footer-copy span{color:var(--gold)}
+    .footer-socials{display:flex;gap:.5rem}
+    .social-link{width:32px;height:32px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);text-decoration:none;font-size:.6rem;transition:all .3s}
+    .social-link:hover{border-color:var(--gold);color:var(--gold)}
+    .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:1rem}
+    .popup-overlay.active{opacity:1;pointer-events:all}
+    .popup{background:var(--deep);border:1px solid var(--border);padding:2.2rem 1.8rem;max-width:360px;width:100%;text-align:center;position:relative;transform:translateY(18px);transition:transform .3s}
+    .popup-overlay.active .popup{transform:translateY(0)}
+    .popup-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--cream);margin-bottom:.5rem}
+    .popup-sub{color:var(--text-dim);font-size:.76rem;margin-bottom:1.4rem;line-height:1.7}
+    .popup-input{width:100%;background:var(--black);border:1px solid var(--border);color:var(--text);padding:.82rem;font-family:'Raleway',sans-serif;font-size:.83rem;outline:none;margin-bottom:.7rem}
+    .popup-input:focus{border-color:var(--gold)}
+    .popup-close{position:absolute;top:.7rem;right:1rem;font-size:1.3rem;cursor:pointer;background:none;border:none;color:var(--text-dim)}
+    .popup-close:hover{color:var(--gold)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .reviews-section{background:var(--black)}
+    .reviews-section>p{font-size:.8rem;color:var(--text-dim);margin-bottom:2.5rem;line-height:1.8;text-align:center}
+    .review-form{max-width:520px;margin:0 auto 4rem;display:flex;flex-direction:column;gap:1rem;text-align:left}
+    .star-picker{display:flex;gap:.4rem;flex-direction:row-reverse;justify-content:flex-end}
+    .star-picker input{display:none}
+    .star-picker label{font-size:1.6rem;color:var(--gold-dim);cursor:pointer;transition:color .2s}
+    .star-picker input:checked~label,.star-picker label:hover,.star-picker label:hover~label{color:var(--gold)}
+    .review-submit{background:var(--gold);color:var(--black);padding:.85rem 2rem;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;width:100%}
+    .review-submit:hover{background:var(--gold-light);transform:translateY(-2px)}
+    .reviews-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:2px}
+    .review-card{background:var(--deep);padding:1.8rem;border-top:2px solid transparent;transition:border-color .3s;animation:fadeUp .5s ease forwards}
+    .review-card:hover{border-top-color:var(--gold)}
+    .review-card-stars{color:var(--gold);font-size:.8rem;margin-bottom:.7rem}
+    .review-card-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.88rem,1.8vw,1rem);font-style:italic;color:var(--text);line-height:1.8;margin-bottom:1rem}
+    .review-card-author{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+    .review-card-product{font-size:.62rem;color:var(--text-dim);margin-top:.3rem}
+    .review-empty{text-align:center;color:var(--text-dim);font-size:.82rem;font-style:italic;padding:2rem;grid-column:1/-1}
+    .review-success{background:rgba(201,168,76,.1);border:1px solid var(--gold-dim);color:var(--gold);padding:.9rem 1rem;font-size:.75rem;text-align:center;display:none}
+    .review-success.show{display:block}
+    @media(max-width:860px){.about{grid-template-columns:1fr;gap:3rem}.about-visual{height:260px}.footer-top{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}}
+    @media(max-width:600px){nav{padding:1rem 4%}.nav-links,.nav-cta{display:none}.hamburger{display:flex}section{padding:4rem 4%}.about{padding:4rem 4%}footer{padding:3rem 4% 1.5rem}.footer-top{grid-template-columns:1fr}.footer-brand{grid-column:auto}.form-row{grid-template-columns:1fr}.hero{padding:7rem 4% 3.5rem}.featured-header{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
 <body>
-
-<!-- Popup -->
 <div class="popup-overlay" id="popup">
   <div class="popup">
-    <button class="popup-close" onclick="closePopup()">×</button>
-    <div style="font-size:1.8rem;margin-bottom:0.8rem;">🌹</div>
-    <div class="popup-title">Welcome to Noir Bloom</div>
-    <p class="popup-sub">Drop your WhatsApp number to get first access to new arrivals and exclusive deals.</p>
+    <button class="popup-close" onclick="closePopup()">x</button>
+    <div style="font-size:1.8rem;margin-bottom:.7rem">🌹</div>
+    <div class="popup-title">New Arrival Alerts</div>
+    <p class="popup-sub">Drop your WhatsApp number and be first to know when new fragrances drop — plus exclusive deals.</p>
     <input class="popup-input" type="tel" placeholder="+234 000 000 0000"/>
-    <button class="btn-primary" style="width:100%;border:none;cursor:pointer;" onclick="closePopup()">Notify Me</button>
-    <p style="font-size:0.62rem;color:var(--text-dim);margin-top:0.7rem;">No spam. Ever. 🖤</p>
+    <button class="btn-primary" style="width:100%;border:none;cursor:pointer" onclick="closePopup()">Notify Me</button>
+    <p style="font-size:.6rem;color:var(--text-dim);margin-top:.6rem">No spam. Ever.</p>
   </div>
 </div>
-
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Noir <span>Bloom</span></a>
   <ul class="nav-links">
     <li><a href="#collection">Collection</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#reviews">Reviews</a></li>
     <li><a href="#order">Order</a></li>
   </ul>
   <a href="#order" class="nav-cta">Order Now</a>
-  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
-
-<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#collection" onclick="toggleMenu()">Collection</a>
   <a href="#how" onclick="toggleMenu()">How It Works</a>
   <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#reviews" onclick="toggleMenu()">Reviews</a>
   <a href="#order" onclick="toggleMenu()">Place an Order</a>
 </div>
-
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-lines"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">✦ Premium Fragrances · Nigeria</p>
+    <p class="hero-eyebrow">&#10022; Premium Fragrances &middot; Nigeria</p>
     <h1 class="hero-title">Noir<br/><em>Bloom</em></h1>
     <p class="hero-subtitle">Where darkness blooms into luxury</p>
-    <p class="hero-desc">Premium international fragrances, curated for those who know their scent. Delivered to your door anywhere in Nigeria — at prices that actually make sense.</p>
+    <p class="hero-desc">Premium international fragrances, curated for those who know their scent. Delivered to your door anywhere in Nigeria &mdash; at prices that make sense.</p>
     <div class="hero-cta">
       <a href="#collection" class="btn-primary">Shop Collection</a>
       <a href="#order" class="btn-ghost">Place an Order</a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <div class="scroll-text">Scroll</div>
-  </div>
 </section>
-
-<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span class="marquee-item">Premium Fragrances <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Fast Delivery Nigeria <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Affordable Luxury <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Noir Bloom <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">International Brands <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Authentic Scents <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Premium Fragrances <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Fast Delivery Nigeria <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Affordable Luxury <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Noir Bloom <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">International Brands <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">Authentic Scents <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Premium Fragrances <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Fast Delivery Nigeria <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Affordable Luxury <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Noir Bloom <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">International Brands <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Authentic Scents <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Premium Fragrances <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Fast Delivery Nigeria <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Affordable Luxury <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Noir Bloom <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">International Brands <span class="marquee-dot">&#10022;</span></span>
+    <span class="marquee-item">Authentic Scents <span class="marquee-dot">&#10022;</span></span>
   </div>
 </div>
-
-<!-- COLLECTION -->
-<section class="section-wrap featured" id="collection">
+<section class="featured" id="collection">
   <div class="featured-header">
     <div>
-      <p class="section-label">✦ Our Collection</p>
+      <p class="section-label">&#10022; Our Collection</p>
       <h2 class="section-title">Signature<br/><em>Fragrances</em></h2>
     </div>
-    <p>Every bottle tells a story. From smoky ouds to fresh florals — world-class scents at prices built for Nigeria.</p>
+    <p>Every bottle tells a story. From smoky ouds to fresh florals &mdash; world-class scents at prices built for Nigeria.</p>
   </div>
   <div class="products-grid">
     <div class="product-card">
       <div class="product-img-wrap">
-        <div class="product-placeholder">
-          <div class="product-placeholder-icon">🖤</div>
-          <div class="product-placeholder-text">Add your photo</div>
-        </div>
+        <div class="placeholder-icon">🖤</div>
         <div class="product-badge">Bestseller</div>
+        <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       </div>
-      <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       <div class="product-body">
-        <div class="product-category">Oud · Oriental</div>
+        <div class="product-category">Oud &middot; Oriental</div>
         <div class="product-name">Midnight Oud</div>
-        <div class="product-notes">Dark wood · Amber · Musk</div>
+        <div class="product-notes">Dark wood &middot; Amber &middot; Musk</div>
         <div class="product-footer">
-          <div class="product-price">₦12,500 <span>/ 50ml</span></div>
+          <div class="product-price">&#8358;12,500 <span>/ 50ml</span></div>
           <a href="#order" class="btn-order">Order</a>
         </div>
       </div>
     </div>
     <div class="product-card">
       <div class="product-img-wrap">
-        <div class="product-placeholder">
-          <div class="product-placeholder-icon">🌹</div>
-          <div class="product-placeholder-text">Add your photo</div>
-        </div>
+        <div class="placeholder-icon">🌹</div>
         <div class="product-badge">New</div>
+        <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       </div>
-      <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       <div class="product-body">
-        <div class="product-category">Floral · Feminine</div>
+        <div class="product-category">Floral &middot; Feminine</div>
         <div class="product-name">Rose Noir</div>
-        <div class="product-notes">Rose · Bergamot · Vanilla</div>
+        <div class="product-notes">Rose &middot; Bergamot &middot; Vanilla</div>
         <div class="product-footer">
-          <div class="product-price">₦10,000 <span>/ 50ml</span></div>
+          <div class="product-price">&#8358;10,000 <span>/ 50ml</span></div>
           <a href="#order" class="btn-order">Order</a>
         </div>
       </div>
     </div>
     <div class="product-card">
       <div class="product-img-wrap">
-        <div class="product-placeholder">
-          <div class="product-placeholder-icon">🌊</div>
-          <div class="product-placeholder-text">Add your photo</div>
-        </div>
+        <div class="placeholder-icon">🌊</div>
+        <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       </div>
-      <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       <div class="product-body">
-        <div class="product-category">Fresh · Aquatic</div>
+        <div class="product-category">Fresh &middot; Aquatic</div>
         <div class="product-name">Aqua Bloom</div>
-        <div class="product-notes">Sea salt · Citrus · Cedar</div>
+        <div class="product-notes">Sea salt &middot; Citrus &middot; Cedar</div>
         <div class="product-footer">
-          <div class="product-price">₦9,500 <span>/ 50ml</span></div>
+          <div class="product-price">&#8358;9,500 <span>/ 50ml</span></div>
           <a href="#order" class="btn-order">Order</a>
         </div>
       </div>
     </div>
     <div class="product-card">
       <div class="product-img-wrap">
-        <div class="product-placeholder">
-          <div class="product-placeholder-icon">🔥</div>
-          <div class="product-placeholder-text">Add your photo</div>
-        </div>
+        <div class="placeholder-icon">🔥</div>
         <div class="product-badge">Hot</div>
+        <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       </div>
-      <div class="product-overlay"><a href="#order" class="btn-order">Order Now</a></div>
       <div class="product-body">
-        <div class="product-category">Spicy · Woody</div>
+        <div class="product-category">Spicy &middot; Woody</div>
         <div class="product-name">Ember Gold</div>
-        <div class="product-notes">Pepper · Sandalwood · Tonka</div>
+        <div class="product-notes">Pepper &middot; Sandalwood &middot; Tonka</div>
         <div class="product-footer">
-          <div class="product-price">₦11,000 <span>/ 50ml</span></div>
+          <div class="product-price">&#8358;11,000 <span>/ 50ml</span></div>
           <a href="#order" class="btn-order">Order</a>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- HOW IT WORKS -->
-<section class="section-wrap how" id="how">
-  <p class="section-label">✦ The Process</p>
+<section class="how" id="how">
+  <p class="section-label">&#10022; The Process</p>
   <h2 class="section-title">How to Get<br/><em>Your Scent</em></h2>
   <div class="steps">
     <div class="step">
       <div class="step-num">01</div>
       <div class="step-line"></div>
-      <div class="step-title">Browse & Choose</div>
-      <p class="step-desc">Explore our curated collection. Find the scent that matches your personality — or message us on WhatsApp for a personal recommendation.</p>
+      <div class="step-title">Browse &amp; Choose</div>
+      <p class="step-desc">Explore our curated collection. Find the scent that matches your personality &mdash; or WhatsApp us for a personal recommendation.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
       <div class="step-line"></div>
       <div class="step-title">Place Your Order</div>
-      <p class="step-desc">Fill out the order form below. Send via WhatsApp or pay directly to our Opay account. We confirm within minutes.</p>
+      <p class="step-desc">Fill the order form with your name, address, and chosen fragrance. Send it to us via WhatsApp in one tap.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
       <div class="step-line"></div>
       <div class="step-title">We Source It</div>
-      <p class="step-desc">We source your fragrance from our trusted suppliers. Every bottle is verified authentic before it leaves our hands.</p>
+      <p class="step-desc">We source your fragrance from trusted suppliers. Every bottle is verified authentic before it leaves our hands.</p>
     </div>
     <div class="step">
       <div class="step-num">04</div>
       <div class="step-line"></div>
       <div class="step-title">Fast Delivery</div>
-      <p class="step-desc">Your order is dispatched and delivered to your door across Nigeria. Lagos orders same-day available. Other states 1–3 days.</p>
+      <p class="step-desc">Delivered anywhere in Nigeria. Lagos same-day available. Other states within 1&ndash;3 business days.</p>
     </div>
   </div>
 </section>
-
-<!-- ABOUT -->
-<section class="section-wrap about" id="about">
-  <div class="about-inner">
-    <div class="about-visual">
-      <div class="about-box-1">
-        <div class="about-box-inner">NB</div>
-      </div>
-      <div class="about-box-2">
-        <div class="about-stat-num">100%</div>
-        <div class="about-stat-label">Authentic</div>
-      </div>
-    </div>
-    <div class="about-content">
-      <p class="section-label">✦ Our Story</p>
-      <h2 class="section-title">Luxury Scents<br/><em>For Everyone</em></h2>
-      <p>Noir Bloom was born from a simple belief — exceptional fragrance should not be a privilege. We source premium international perfumes and bring them to Nigeria at prices that respect your wallet.</p>
-      <p>Every scent is hand-selected for its character, longevity, and performance in Nigeria's climate. We don't just sell perfume — we help you find your signature.</p>
-      <div class="about-features">
-        <div class="about-feature"><div class="feature-dot"></div> 100% authentic, verified fragrances</div>
-        <div class="about-feature"><div class="feature-dot"></div> Nationwide delivery across Nigeria</div>
-        <div class="about-feature"><div class="feature-dot"></div> Affordable prices, no compromise on quality</div>
-        <div class="about-feature"><div class="feature-dot"></div> Personal fragrance consultation on WhatsApp</div>
-      </div>
+<div class="about" id="about">
+  <div class="about-visual">
+    <div class="about-box-1"><div class="about-box-inner">NB</div></div>
+    <div class="about-box-2">
+      <div class="about-stat-num">100%</div>
+      <div class="about-stat-label">Authentic</div>
     </div>
   </div>
-</section>
-
-<!-- ORDER -->
-<section class="section-wrap order-section" id="order">
-  <p class="section-label">✦ Ready to Order?</p>
+  <div class="about-content">
+    <p class="section-label">&#10022; Our Story</p>
+    <h2 class="section-title">Luxury Scents<br/><em>For Everyone</em></h2>
+    <p>Noir Bloom was born from a simple belief &mdash; that exceptional fragrance should not be a privilege. We source premium international perfumes and bring them to Nigeria at prices that respect your wallet.</p>
+    <p>Every scent is hand-selected for its character, longevity, and staying power in Nigeria's climate. We don't just sell perfume &mdash; we help you find your signature.</p>
+    <div class="about-features">
+      <div class="about-feature"><div class="feature-dot"></div> 100% authentic, verified fragrances</div>
+      <div class="about-feature"><div class="feature-dot"></div> Delivery nationwide across Nigeria</div>
+      <div class="about-feature"><div class="feature-dot"></div> Affordable prices, no compromise on quality</div>
+      <div class="about-feature"><div class="feature-dot"></div> Personal fragrance consultation via WhatsApp</div>
+    </div>
+  </div>
+</div>
+<section class="order-section" id="order">
+  <p class="section-label">&#10022; Ready to Order?</p>
   <h2 class="section-title">Place Your<br/><em>Order</em></h2>
-  <p class="order-desc">Fill in your details below and we'll confirm your order via WhatsApp within minutes.</p>
+  <p>Fill in your details and we'll confirm via WhatsApp within minutes. Pay on delivery or via OPay transfer.</p>
   <div class="order-form">
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Your Name</label>
-        <input class="form-input" type="text" placeholder="Full name" id="fname"/>
+        <input class="form-input" type="text" id="fname" placeholder="Full name"/>
       </div>
       <div class="form-group">
         <label class="form-label">WhatsApp Number</label>
-        <input class="form-input" type="tel" placeholder="+234 000 0000" id="phone"/>
+        <input class="form-input" type="tel" id="phone" placeholder="+234 000 0000"/>
       </div>
     </div>
     <div class="form-group">
       <label class="form-label">Delivery Address</label>
-      <input class="form-input" type="text" placeholder="Full address including city & state" id="address"/>
+      <input class="form-input" type="text" id="address" placeholder="Full address, city &amp; state"/>
     </div>
     <div class="form-group">
       <label class="form-label">Choose Fragrance</label>
       <select class="form-select" id="fragrance">
-        <option value="">— Select a fragrance —</option>
-        <option>Midnight Oud — ₦12,500</option>
-        <option>Rose Noir — ₦10,000</option>
-        <option>Aqua Bloom — ₦9,500</option>
-        <option>Ember Gold — ₦11,000</option>
-        <option>Not Sure — Help me choose</option>
+        <option value="">Select a fragrance</option>
+        <option>Midnight Oud - N12,500 / 50ml</option>
+        <option>Rose Noir - N10,000 / 50ml</option>
+        <option>Aqua Bloom - N9,500 / 50ml</option>
+        <option>Ember Gold - N11,000 / 50ml</option>
+        <option>Not sure - Help me choose</option>
       </select>
     </div>
     <div class="form-group">
       <label class="form-label">Additional Notes</label>
-      <textarea class="form-textarea" placeholder="Any special requests or questions..."></textarea>
+      <textarea class="form-textarea" id="notes" placeholder="Special requests, questions, gift messages..."></textarea>
     </div>
-
-    <!-- Payment Info -->
-    <div class="payment-info">
-      <div class="payment-info-title">💳 Payment Details (Opay)</div>
-      <div class="payment-detail"><strong>Account Number:</strong> 9156302285</div>
-      <div class="payment-detail"><strong>Bank:</strong> Opay</div>
-      <div class="payment-detail"><strong>Account Name:</strong> Noir Bloom</div>
-      <div class="payment-detail" style="margin-top:0.6rem;font-size:0.72rem;">Pay first, then send your order via WhatsApp with proof of payment.</div>
+    <div class="payment-section">
+      <button class="btn-whatsapp" onclick="sendWhatsApp()">📱 Send Order via WhatsApp</button>
+      <div class="payment-divider">or transfer payment directly</div>
+      <div class="opay-box">
+        <div class="opay-label">OPay Account Number</div>
+        <div class="opay-number">9156302285</div>
+        <div class="opay-name">After transfer, send proof to our WhatsApp to confirm your order</div>
+      </div>
     </div>
-
-    <div class="paypal-section">
-      <button class="btn-whatsapp" onclick="sendWhatsApp()">
-        📱 Send Order via WhatsApp
-      </button>
-    </div>
-    <p class="order-note">* We confirm stock and delivery time via WhatsApp after your order is received.</p>
+    <p class="order-note">* We confirm stock availability &amp; delivery time via WhatsApp after every order.</p>
   </div>
 </section>
-
-<!-- TESTIMONIALS -->
-<section class="section-wrap testimonials">
-  <p class="section-label">✦ Happy Customers</p>
+<section class="testimonials">
+  <p class="section-label">&#10022; Happy Customers</p>
   <h2 class="section-title">What They're<br/><em>Saying</em></h2>
   <div class="testimonials-grid">
     <div class="testimonial">
-      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
       <p class="testimonial-quote">"The Midnight Oud is absolutely divine. People ask me what I'm wearing everywhere I go. And the price? Unbelievable."</p>
-      <div class="testimonial-author">Adaeze O. — Lagos</div>
+      <div class="testimonial-author">Adaeze O. &mdash; Lagos</div>
     </div>
     <div class="testimonial">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-quote">"Ordered Rose Noir for my girlfriend and she hasn't stopped wearing it. Delivery was fast, packaging was beautiful."</p>
-      <div class="testimonial-author">Tunde B. — Abuja</div>
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-quote">"Ordered Rose Noir for my girlfriend and she hasn't stopped wearing it. Fast delivery, beautiful packaging."</p>
+      <div class="testimonial-author">Tunde B. &mdash; Abuja</div>
     </div>
     <div class="testimonial">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-quote">"Finally a Nigerian perfume store that actually delivers quality. Noir Bloom is my go-to now."</p>
-      <div class="testimonial-author">Chisom A. — Port Harcourt</div>
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-quote">"Finally a Nigerian perfume store that delivers real quality. Noir Bloom is my go-to now."</p>
+      <div class="testimonial-author">Chisom A. &mdash; Port Harcourt</div>
     </div>
   </div>
 </section>
-
-<!-- SOCIAL STRIP -->
-<div class="social-strip">
-  <p>✦ Follow Us</p>
-  <div class="social-icons">
-    <a class="social-pill" href="https://instagram.com/faceless99th" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      @faceless99th
-    </a>
-    <a class="social-pill" href="https://tiktok.com/@faceless99th" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-      @faceless99th
-    </a>
-    <a class="social-pill" href="https://x.com/faceless99th" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      @faceless99th
-    </a>
-    <a class="social-pill" href="https://wa.me/2349156302285" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp Us
-    </a>
+<section class="reviews-section" id="reviews">
+  <p class="section-label" style="text-align:center">&#10022; Customer Reviews</p>
+  <h2 class="section-title" style="text-align:center">Leave Your<br/><em>Review</em></h2>
+  <p>Tried a Noir Bloom fragrance? Tell the world what you think. Your review helps others find their perfect scent.</p>
+  <div class="review-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" id="rname" placeholder="e.g. Amaka O."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">City</label>
+        <input class="form-input" type="text" id="rcity" placeholder="e.g. Lagos"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fragrance You Bought</label>
+      <select class="form-select" id="rproduct">
+        <option value="">Select fragrance</option>
+        <option>Midnight Oud</option>
+        <option>Rose Noir</option>
+        <option>Aqua Bloom</option>
+        <option>Ember Gold</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Rating</label>
+      <div class="star-picker">
+        <input type="radio" name="stars" id="s5" value="5"/><label for="s5">&#9733;</label>
+        <input type="radio" name="stars" id="s4" value="4"/><label for="s4">&#9733;</label>
+        <input type="radio" name="stars" id="s3" value="3"/><label for="s3">&#9733;</label>
+        <input type="radio" name="stars" id="s2" value="2"/><label for="s2">&#9733;</label>
+        <input type="radio" name="stars" id="s1" value="1"/><label for="s1">&#9733;</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Review</label>
+      <textarea class="form-textarea" id="rtext" placeholder="What do you love about your fragrance? How long does it last? Would you recommend it?" style="min-height:100px"></textarea>
+    </div>
+    <div class="review-success" id="reviewSuccess">&#10022; Thank you! Your review has been posted successfully.</div>
+    <button class="review-submit" onclick="submitReview()">Post My Review</button>
   </div>
-</div>
-
-<!-- FOOTER -->
+  <div class="reviews-wall" id="reviewsWall">
+    <div class="review-card">
+      <div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-card-text">"The Midnight Oud is absolutely divine. People stop me everywhere to ask what I'm wearing. And the price? Unbelievable value."</p>
+      <div class="review-card-author">Adaeze O. &mdash; Lagos</div>
+      <div class="review-card-product">Midnight Oud</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-card-text">"Ordered Rose Noir for my girlfriend and she hasn't stopped wearing it since. Fast delivery and beautiful packaging too."</p>
+      <div class="review-card-author">Tunde B. &mdash; Abuja</div>
+      <div class="review-card-product">Rose Noir</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-card-text">"Finally a Nigerian perfume store that delivers real quality. Noir Bloom is my go-to now. No more overpriced mall perfumes."</p>
+      <div class="review-card-author">Chisom A. &mdash; Port Harcourt</div>
+      <div class="review-card-product">Aqua Bloom</div>
+    </div>
+  </div>
+</section>
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
@@ -945,43 +493,70 @@
       </ul>
     </div>
     <div>
-      <div class="footer-col-title">Contact</div>
+      <div class="footer-col-title">Contact Us</div>
       <ul class="footer-links">
         <li><a href="https://wa.me/2349156302285" target="_blank">WhatsApp</a></li>
-        <li><a href="https://instagram.com/faceless99th" target="_blank">Instagram</a></li>
-        <li><a href="https://tiktok.com/@faceless99th" target="_blank">TikTok</a></li>
-        <li><a href="https://x.com/faceless99th" target="_blank">X (Twitter)</a></li>
+        <li><a href="https://instagram.com/faceless99th" target="_blank">Instagram: @faceless99th</a></li>
+        <li><a href="https://tiktok.com/@faceless99th" target="_blank">TikTok: @faceless99th</a></li>
+        <li><a href="https://x.com/faceless99th" target="_blank">X: @faceless99th</a></li>
         <li><a href="mailto:ibrahimbolakale999@gmail.com">Email Us</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 <span>Noir Bloom</span>. All rights reserved. Made with 🖤 in Nigeria.</p>
-    <p class="footer-copy">📧 ibrahimbolakale999@gmail.com</p>
+    <p class="footer-copy">&#169; 2026 <span>Noir Bloom</span>. All rights reserved. Made with love in Nigeria.</p>
+    <div class="footer-socials">
+      <a class="social-link" href="https://instagram.com/faceless99th" target="_blank">IG</a>
+      <a class="social-link" href="https://tiktok.com/@faceless99th" target="_blank">TK</a>
+      <a class="social-link" href="https://x.com/faceless99th" target="_blank">X</a>
+      <a class="social-link" href="https://wa.me/2349156302285" target="_blank">WA</a>
+      <a class="social-link" href="mailto:ibrahimbolakale999@gmail.com">✉</a>
+    </div>
   </div>
 </footer>
-
 <script>
-  // Popup after 4s
-  setTimeout(() => { document.getElementById('popup').classList.add('active'); }, 4000);
-  function closePopup() { document.getElementById('popup').classList.remove('active'); }
-
-  // Mobile menu
-  function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
-  }
-
-  // WhatsApp order
-  function sendWhatsApp() {
-    const name = document.getElementById('fname').value.trim() || 'Not provided';
-    const phone = document.getElementById('phone').value.trim() || 'Not provided';
-    const address = document.getElementById('address').value.trim() || 'Not provided';
-    const fragrance = document.getElementById('fragrance').value || 'Not selected';
-    if (!name || name === 'Not provided') { alert('Please enter your name.'); return; }
-    if (!fragrance || fragrance === 'Not selected') { alert('Please select a fragrance.'); return; }
-    const msg = `Hello Noir Bloom! 🖤\n\nI'd like to place an order:\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Delivery Address:* ${address}\n*Fragrance:* ${fragrance}\n\nPlease confirm availability and delivery time. Thank you!`;
-    window.open(`https://wa.me/2349156302285?text=${encodeURIComponent(msg)}`, '_blank');
-  }
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+setTimeout(()=>{document.getElementById('popup').classList.add('active')},5000);
+function closePopup(){document.getElementById('popup').classList.remove('active')}
+document.getElementById('popup').addEventListener('click',function(e){if(e.target===this)closePopup()});
+function submitReview(){
+  var name=document.getElementById('rname').value.trim();
+  var city=document.getElementById('rcity').value.trim();
+  var product=document.getElementById('rproduct').value;
+  var text=document.getElementById('rtext').value.trim();
+  var starEl=document.querySelector('input[name="stars"]:checked');
+  if(!name){alert('Please enter your name.');return}
+  if(!product){alert('Please select the fragrance you bought.');return}
+  if(!starEl){alert('Please give a star rating.');return}
+  if(!text||text.length<10){alert('Please write a review of at least 10 characters.');return}
+  var stars=parseInt(starEl.value);
+  var starsHtml='';
+  for(var i=0;i<stars;i++)starsHtml+='&#9733;';
+  for(var j=stars;j<5;j++)starsHtml+='<span style="color:var(--gold-dim)">&#9733;</span>';
+  var card=document.createElement('div');
+  card.className='review-card';
+  card.innerHTML='<div class="review-card-stars">'+starsHtml+'</div><p class="review-card-text">"'+text+'"</p><div class="review-card-author">'+name+(city?' &mdash; '+city:'')+'</div><div class="review-card-product">'+product+'</div>';
+  var wall=document.getElementById('reviewsWall');
+  wall.insertBefore(card,wall.firstChild);
+  document.getElementById('rname').value='';
+  document.getElementById('rcity').value='';
+  document.getElementById('rproduct').value='';
+  document.getElementById('rtext').value='';
+  document.querySelectorAll('input[name="stars"]').forEach(function(el){el.checked=false});
+  var success=document.getElementById('reviewSuccess');
+  success.classList.add('show');
+  setTimeout(function(){success.classList.remove('show')},4000);
+}
+  var name=document.getElementById('fname').value.trim();
+  var phone=document.getElementById('phone').value.trim();
+  var address=document.getElementById('address').value.trim();
+  var fragrance=document.getElementById('fragrance').value;
+  var notes=document.getElementById('notes').value.trim()||'None';
+  if(!name){alert('Please enter your name before ordering.');return}
+  if(!fragrance){alert('Please select a fragrance before ordering.');return}
+  var msg='Hello Noir Bloom!\n\nI would like to place an order:\n\nName: '+name+'\nPhone: '+(phone||'Not provided')+'\nDelivery Address: '+(address||'Not provided')+'\nFragrance: '+fragrance+'\nNotes: '+notes+'\n\nPlease confirm availability and delivery time. Thank you!';
+  window.open('https://wa.me/2349156302285?text='+encodeURIComponent(msg),'_blank');
+}
 </script>
 </body>
 </html>
